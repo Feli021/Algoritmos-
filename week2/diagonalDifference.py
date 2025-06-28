@@ -1,51 +1,43 @@
-#Usando Numpy
+import math
+import os
+import random
+import re
+import sys
 
-import numpy as np
-
-def diagonalDifference(arr):
-    # Calcula a diferença absoluta entre as diagonais da matriz
-    matriz = np.array(arr)
-    soma_diagonal_principal = matriz.trace()
-    soma_diagonal_secundaria = np.fliplr(matriz).trace()
-    return abs(soma_diagonal_principal - soma_diagonal_secundaria)
-
-
-if __name__ == "__main__":
-    n = int(input().strip())
-
-    arr = [list(map(int, input().rstrip().split())) for _ in range(n)]
-
-    result = diagonalDifference(arr)
-
-    print(result)
- #Usando abordagem nativa do python (for)
+#
+# Complete the 'diagonalDifference' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts 2D_INTEGER_ARRAY arr as parameter.
+#
 
 def diagonalDifference(arr):
-    """
-    Calcula a diferença absoluta entre a soma da diagonal principal e da diagonal secundária.
-    
-    :param arr: Matriz quadrada (lista de listas)
-    :return: Diferença absoluta entre as somas das diagonais
-    """
+    # Check if the matrix is valid and if all rows have the same length
     n = len(arr)
-    soma_diagonal_principal = 0
-    soma_diagonal_secundaria = 0
+    if n == 0 or any(len(row) != n for row in arr):
+        return "Error: the matrix must be square (n x n)."
+    
+    principal_sum = 0
+    secondary_sum = 0
 
     for i in range(n):
-        soma_diagonal_principal += arr[i][i]
-        soma_diagonal_secundaria += arr[i][n - i - 1]
+        principal_sum += arr[i][i]               # Main diagonal
+        secondary_sum += arr[i][n - 1 - i]       # Secondary diagonal
 
-    return abs(soma_diagonal_principal - soma_diagonal_secundaria)
+    return abs(principal_sum - secondary_sum)
 
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
 
-if __name__ == "__main__":
-    n = int(input("Digite o tamanho da matriz: "))
+    n = int(input().strip())
 
     arr = []
+
     for _ in range(n):
-        linha = list(map(int, input("Digite os elementos da linha separados por espaço: ").split()))
-        arr.append(linha)
+        arr.append(list(map(int, input().rstrip().split())))
 
     result = diagonalDifference(arr)
 
-    print(result)
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
